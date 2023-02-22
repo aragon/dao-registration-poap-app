@@ -1,9 +1,47 @@
 import { UserRejectedRequestError, useNetwork, useSignMessage } from 'wagmi'
 import { SiweMessage } from 'siwe'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Router from 'next/router'
 import { ConnectKitButton } from 'connectkit'
 import { NoSsr } from '../core/NoSsr'
+import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import Router from 'next/router'
+import { apolloClient } from '@/lib/apollo-client'
+
+const NONCE = gql(/* GraphQL */ `
+  query Nonce {
+    nonce
+  }
+`)
+
+const LOGIN = gql(/* GraphQL */ `
+  mutation Login(
+    $domain: String!
+    $address: String!
+    $nonce: String!
+    $statement: String!
+    $uri: String!
+    $version: String!
+    $chainId: Int!
+    $issuedAt: String!
+    $signature: String!
+  ) {
+    login(
+      data: {
+        message: {
+          domain: $domain
+          address: $address
+          nonce: $nonce
+          statement: $statement
+          uri: $uri
+          version: $version
+          chainId: $chainId
+          issuedAt: $issuedAt
+        }
+        signature: $signature
+      }
+    )
+  }
+`)
 
 export const Login = () => {
   return (
@@ -24,7 +62,6 @@ export const Login = () => {
 }
 
 class SignVerificationError extends Error {}
-class NoAccessTokenError extends Error {}
 
 enum LoginStatus {
   INITIALIZING = 'INITIALIZING',
@@ -45,8 +82,8 @@ interface LoginState {
 
 const initialLoginState: LoginState = {
   cause: null,
-  nonce: null,
   status: LoginStatus.INITIALIZING,
+  nonce: null,
   userActive: false,
 }
 
@@ -57,6 +94,8 @@ interface SignInButtonProps {
 }
 
 const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
+  const [nonce, { called, loading, data }] = useLazyQuery(NONCE)
+  const [login] = useMutation(LOGIN)
   const fetchingNonce = useRef<boolean>(false)
   const [loginState, setLoginState] = useState<LoginState>(initialLoginState)
   const { chain: activeChain } = useNetwork()
@@ -81,42 +120,22 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
   // to ensure deep linking works for WalletConnect
   // users on iOS when signing the SIWE message
   useEffect(() => {
-    const fetchNonce = async () => {
-      if (fetchingNonce.current === true) {
-        // block state-driven updates from triggering multiple fetches
-        return
-      }
-      fetchingNonce.current = true
-
-      try {
-        const nonceRes = await fetch('http://localhost:3000/auth/nonce')
-        const nonceResponse = await nonceRes.json()
-        console.log(
-          '🚀 ~ file: Login.tsx:93 ~ fetchNonce ~ nonce',
-          nonceResponse
-        )
-        setLoginState((s) => ({
-          ...s,
-          nonce: nonceResponse.nonce,
-          status: LoginStatus.CHECKING_CONNECTION,
-        }))
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setLoginState((s) => ({
-            ...s,
-            cause: error as Error,
-            status: LoginStatus.ERROR,
-          }))
-        }
-      }
-
-      fetchingNonce.current = false
-    }
-
     if (loginState.status === LoginStatus.INITIALIZING) {
-      fetchNonce()
+      nonce()
     }
-  }, [loginState.status])
+  }, [loginState.status, data])
+
+  // 1.1 Wait for nonce to be fetched
+  useEffect(() => {
+    console.log(data?.nonce)
+    if (called && !loading && data?.nonce) {
+      setLoginState((s) => ({
+        ...s,
+        nonce: data.nonce,
+        status: LoginStatus.CHECKING_CONNECTION,
+      }))
+    }
+  }, [called, loading, data])
 
   // 2. When connected, update status to move forward
   useEffect(() => {
@@ -132,34 +151,32 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
         const signature = await signMessageAsync({
           message: message.prepareMessage(),
         })
-        console.log(
-          '🚀 ~ file: Login.tsx:130 ~ authenticate ~ message',
-          message
-        )
-        console.log(
-          '🚀 ~ file: Login.tsx:131 ~ authenticate ~ signature',
-          signature
-        )
 
-        const verifyResponse = await fetch(
-          'http://localhost:3000/auth/verify',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message, signature }),
-          }
-        )
+        const result = await login({
+          variables: {
+            domain: message.domain,
+            address: message.address,
+            statement: message.statement,
+            uri: message.uri,
+            version: message.version,
+            chainId: message.chainId,
+            nonce: message.nonce,
+            issuedAt: message.issuedAt,
+            signature,
+          },
+        })
+        if (result?.data?.login) {
+          localStorage.setItem(
+            process.env.NEXT_PUBLIC_LOGIN_KEY ?? '',
+            signature
+          )
+          apolloClient.resetStore()
 
-        if (!verifyResponse.ok) {
-          throw new SignVerificationError('Unable to verify sign message')
+          setLoginState((s) => ({
+            ...s,
+            status: LoginStatus.REQUESTING_ACCESS,
+          }))
         }
-
-        setLoginState((s) => ({
-          ...s,
-          status: LoginStatus.REQUESTING_ACCESS,
-        }))
       } catch (error: unknown) {
         if (error instanceof UserRejectedRequestError) {
           // user rejected, do nothing
@@ -181,7 +198,6 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
         }
       }
     }
-
     if (siweMessage && loginState.status === LoginStatus.AUTHENTICATING) {
       authenticate(siweMessage)
     }
@@ -191,15 +207,6 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
   useEffect(() => {
     const requestAccess = async () => {
       try {
-        // const me = await fetch('/api/auth/me', {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        // })
-
-        // const response = await me.json()
-
         setLoginState((s) => ({
           ...s,
           status: LoginStatus.FORWARDING,
@@ -224,7 +231,7 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
   // 5. Forward appropriately
   useEffect(() => {
     if (loginState.status === LoginStatus.FORWARDING) {
-      // Router.push(loginState.userActive ? '/projects' : '/onboarding')
+      Router.push('/landing')
     }
   }, [loginState.status, loginState.userActive])
 
