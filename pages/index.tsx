@@ -1,3 +1,4 @@
+import { Login } from '@/components/auth/Login'
 import { H1 } from '@/components/core/Typography'
 import Head from 'next/head'
 
@@ -12,6 +13,7 @@ export default function Home() {
       </Head>
       <main>
         <H1>Welcome to POAP Aragon Claim</H1>
+        <Login />
       </main>
     </>
   )
