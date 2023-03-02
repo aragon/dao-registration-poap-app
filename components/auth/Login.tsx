@@ -120,7 +120,7 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
           variables: {
             domain: message.domain,
             address: message.address,
-            statement: message.statement,
+            statement: message.statement ?? '',
             uri: message.uri,
             version: message.version,
             chainId: message.chainId,
