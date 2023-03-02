@@ -52,7 +52,7 @@ export type MutationLoginArgs = {
 
 export type MutationReassignPendingClaimCodesArgs = {
   count: Scalars['Int'];
-  creatorAddress: InputMaybe<Scalars['String']>;
+  creatorAddress?: InputMaybe<Scalars['String']>;
 };
 
 export type PendingDaoRegistrySync = {
@@ -97,10 +97,15 @@ export type Query = {
   allPoapEvents: Array<PoapEvent>;
   canClaimPoap: Scalars['Boolean'];
   isMinted: Scalars['Boolean'];
-  mintedClaimCode: Maybe<PoapClaimCode>;
+  mintedClaimCode?: Maybe<PoapClaimCode>;
   nonce: Scalars['String'];
   poapEvent: PoapEvent;
   statistics: Statistics;
+};
+
+
+export type QueryCanClaimPoapArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -168,6 +173,13 @@ export type User = {
   id: Scalars['Int'];
 };
 
+export type CanClaimPoapQueryVariables = Exact<{
+  address: Scalars['String'];
+}>;
+
+
+export type CanClaimPoapQuery = { __typename?: 'Query', canClaimPoap: boolean };
+
 export type LoginMutationVariables = Exact<{
   domain: Scalars['String'];
   address: Scalars['String'];
@@ -194,6 +206,39 @@ export type MintPoapMutationVariables = Exact<{ [key: string]: never; }>;
 export type MintPoapMutation = { __typename?: 'Mutation', mintPoap: { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string } };
 
 
+export const CanClaimPoapDocument = gql`
+    query CanClaimPoap($address: String!) {
+  canClaimPoap(address: $address)
+}
+    `;
+
+/**
+ * __useCanClaimPoapQuery__
+ *
+ * To run a query within a React component, call `useCanClaimPoapQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCanClaimPoapQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCanClaimPoapQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useCanClaimPoapQuery(baseOptions: Apollo.QueryHookOptions<CanClaimPoapQuery, CanClaimPoapQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CanClaimPoapQuery, CanClaimPoapQueryVariables>(CanClaimPoapDocument, options);
+      }
+export function useCanClaimPoapLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CanClaimPoapQuery, CanClaimPoapQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CanClaimPoapQuery, CanClaimPoapQueryVariables>(CanClaimPoapDocument, options);
+        }
+export type CanClaimPoapQueryHookResult = ReturnType<typeof useCanClaimPoapQuery>;
+export type CanClaimPoapLazyQueryHookResult = ReturnType<typeof useCanClaimPoapLazyQuery>;
+export type CanClaimPoapQueryResult = Apollo.QueryResult<CanClaimPoapQuery, CanClaimPoapQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($domain: String!, $address: String!, $nonce: String!, $statement: String!, $uri: String!, $version: String!, $chainId: Int!, $issuedAt: String!, $signature: String!) {
   login(

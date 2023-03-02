@@ -1,8 +1,10 @@
+import { CTAButton } from '@/components/auth/CTAButton'
 import { Login } from '@/components/auth/Login'
 import { Caption, H1 } from '@/components/core/Typography'
 import { LandingLayout } from '@/components/layouts/LandingLayout'
 import Svg from '@/components/svgs'
 import Head from 'next/head'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 const ClaimTextContainer = styled.div`
@@ -39,13 +41,7 @@ export default function Home() {
           <ClaimTextContainer>
             <H1>Claim your POAP for launching your DAO with Aragon App!</H1>
           </ClaimTextContainer>
-          <LoginContainer>
-            <Login />
-            <Caption $color="neutral500">
-              Only wallet addresses whose DAO was made with Aragon can claim
-              POAPs.
-            </Caption>
-          </LoginContainer>
+          <CTAButton />
         </LandingLayout>
       </main>
     </>
