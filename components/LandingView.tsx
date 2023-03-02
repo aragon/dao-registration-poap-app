@@ -12,7 +12,6 @@ type MintError = {
 export const LandingView = () => {
   const [mintPoap] = useMintPoapMutation()
   const [mintError, setMintError] = useState<MintError | null>(null)
-  console.log('🚀 ~ file: landing.tsx:15 ~ LandingPage ~ mintError:', mintError)
 
   const handleMintPoap = async () => {
     try {
