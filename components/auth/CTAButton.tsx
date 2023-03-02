@@ -12,13 +12,13 @@ const DEFAULT_CAPTION =
 
 export const CTAButton = () => {
   const { isConnected } = useAccount()
-  const { canClaimPoap, handleMintPoap, mintError, mintStatus } = useMintPoap()
-  const [eventId, setEventId] = useState<number | null>(null)
+  const { canClaimPoap, handleMintPoap, mintError, mintStatus, mintedPoap } =
+    useMintPoap()
+  const poapGalleryUrl = `https://poap.gallery/event/${mintedPoap?.event?.externalId}`
 
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {
       await handleMintPoap()
-      setEventId(1)
     }
   }
 
