@@ -1,28 +1,13 @@
 import { CTAButton } from '@/components/auth/CTAButton'
-import { Login } from '@/components/auth/Login'
-import { Caption, H1 } from '@/components/core/Typography'
+import { H1 } from '@/components/core/Typography'
 import { LandingLayout } from '@/components/layouts/LandingLayout'
 import Svg from '@/components/svgs'
 import Head from 'next/head'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 const ClaimTextContainer = styled.div`
   width: 59.2rem;
   text-align: center;
-`
-
-const LoginContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  max-width: 32rem;
-  gap: 1.2rem;
-
-  ${({ theme }) => theme.bp.md} {
-    display: flex;
-    width: 32rem;
-  }
 `
 
 export default function Home() {
