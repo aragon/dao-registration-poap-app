@@ -1,7 +1,14 @@
+fragment MintedPoap on PoapClaimCode {
+  id
+  qrHash
+  daoAddress
+  event {
+    externalId
+  }
+}
+
 mutation MintPoap {
   mintPoap {
-    id
-    qrHash
-    daoAddress
+    ...MintedPoap
   }
 }

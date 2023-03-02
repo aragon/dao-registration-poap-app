@@ -1,7 +1,11 @@
 import { ApolloError } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { useCanClaimPoapLazyQuery, useMintPoapMutation } from '../types'
+import {
+  MintedPoapFragment,
+  useCanClaimPoapLazyQuery,
+  useMintPoapMutation,
+} from '../types'
 import { useLogin } from './useLogin'
 
 type ErrorType = 'red' | 'yellow'
@@ -27,6 +31,9 @@ export const useMintPoap = () => {
   const { loginConnectedAccount, loggedIn, loggingIn } = useLogin()
   const [camClaimPoapQuery, camClaimPoapQueryResponse] =
     useCanClaimPoapLazyQuery()
+  const [mintedPoap, setMintedPoap] = useState<MintedPoapFragment | undefined>(
+    undefined
+  )
 
   // Resolve what to do whe canClaimPoap query is done
   useEffect(() => {
@@ -67,6 +74,7 @@ export const useMintPoap = () => {
       try {
         const { data } = await mintPoap()
         if (data?.mintPoap.id) {
+          setMintedPoap(data.mintPoap)
           setMintError(null)
           setMintStatus('MINTED')
         }
@@ -114,5 +122,5 @@ export const useMintPoap = () => {
     }
   }
 
-  return { handleMintPoap, canClaimPoap, mintError, mintStatus }
+  return { handleMintPoap, canClaimPoap, mintError, mintStatus, mintedPoap }
 }

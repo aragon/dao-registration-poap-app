@@ -33,10 +33,16 @@ export type ImportPoapEventInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   findOrCreateUser: User;
+  grantAdminRole: Scalars['Boolean'];
   importPoapEvent: PoapEvent;
   login: Scalars['Boolean'];
   mintPoap: PoapClaimCode;
   reassignPendingClaimCodes: ReassignPendingSyncResult;
+};
+
+
+export type MutationGrantAdminRoleArgs = {
+  address: Scalars['String'];
 };
 
 
@@ -200,12 +206,23 @@ export type NonceQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type NonceQuery = { __typename?: 'Query', nonce: string };
 
+export type MintedPoapFragment = { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, event: { __typename?: 'PoapEvent', externalId: number } };
+
 export type MintPoapMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MintPoapMutation = { __typename?: 'Mutation', mintPoap: { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string } };
+export type MintPoapMutation = { __typename?: 'Mutation', mintPoap: { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, event: { __typename?: 'PoapEvent', externalId: number } } };
 
-
+export const MintedPoapFragmentDoc = gql`
+    fragment MintedPoap on PoapClaimCode {
+  id
+  qrHash
+  daoAddress
+  event {
+    externalId
+  }
+}
+    `;
 export const CanClaimPoapDocument = gql`
     query CanClaimPoap($address: String!) {
   canClaimPoap(address: $address)
@@ -315,12 +332,10 @@ export type NonceQueryResult = Apollo.QueryResult<NonceQuery, NonceQueryVariable
 export const MintPoapDocument = gql`
     mutation MintPoap {
   mintPoap {
-    id
-    qrHash
-    daoAddress
+    ...MintedPoap
   }
 }
-    `;
+    ${MintedPoapFragmentDoc}`;
 export type MintPoapMutationFn = Apollo.MutationFunction<MintPoapMutation, MintPoapMutationVariables>;
 
 /**
