@@ -8,9 +8,10 @@ const config: CodegenConfig = {
       },
     },
   },
+  documents: 'components/**/*.graphql',
   generates: {
     './components/types.ts': {
-      plugins: ['typescript'],
+      plugins: ['typescript', 'typescript-react-apollo'],
     },
   },
 }

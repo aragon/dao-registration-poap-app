@@ -1,0 +1,27 @@
+mutation Login(
+  $domain: String!
+  $address: String!
+  $nonce: String!
+  $statement: String!
+  $uri: String!
+  $version: String!
+  $chainId: Int!
+  $issuedAt: String!
+  $signature: String!
+) {
+  login(
+    data: {
+      message: {
+        domain: $domain
+        address: $address
+        nonce: $nonce
+        statement: $statement
+        uri: $uri
+        version: $version
+        chainId: $chainId
+        issuedAt: $issuedAt
+      }
+      signature: $signature
+    }
+  )
+}

@@ -1,3 +1,5 @@
+import { gql } from '@apollo/client'
+import * as Apollo from '@apollo/client'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -9,6 +11,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
+const defaultOptions = {} as const
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -52,6 +55,7 @@ export type MutationLoginArgs = {
 
 export type MutationReassignPendingClaimCodesArgs = {
   count: Scalars['Int']
+  creatorAddress?: InputMaybe<Scalars['String']>
 }
 
 export type PendingDaoRegistrySync = {
@@ -164,3 +168,174 @@ export type User = {
   /** Unique identifier */
   id: Scalars['Int']
 }
+
+export const LoginDocument = gql`
+  mutation Login(
+    $domain: String!
+    $address: String!
+    $nonce: String!
+    $statement: String!
+    $uri: String!
+    $version: String!
+    $chainId: Int!
+    $issuedAt: String!
+    $signature: String!
+  ) {
+    login(
+      data: {
+        message: {
+          domain: $domain
+          address: $address
+          nonce: $nonce
+          statement: $statement
+          uri: $uri
+          version: $version
+          chainId: $chainId
+          issuedAt: $issuedAt
+        }
+        signature: $signature
+      }
+    )
+  }
+`
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      domain: // value for 'domain'
+ *      address: // value for 'address'
+ *      nonce: // value for 'nonce'
+ *      statement: // value for 'statement'
+ *      uri: // value for 'uri'
+ *      version: // value for 'version'
+ *      chainId: // value for 'chainId'
+ *      issuedAt: // value for 'issuedAt'
+ *      signature: // value for 'signature'
+ *   },
+ * });
+ */
+export function useLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    options
+  )
+}
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
+export type LoginMutationOptions = Apollo.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
+>
+export const NonceDocument = gql`
+  query Nonce {
+    nonce
+  }
+`
+
+/**
+ * __useNonceQuery__
+ *
+ * To run a query within a React component, call `useNonceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNonceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNonceQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNonceQuery(
+  baseOptions?: Apollo.QueryHookOptions<NonceQuery, NonceQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<NonceQuery, NonceQueryVariables>(
+    NonceDocument,
+    options
+  )
+}
+export function useNonceLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<NonceQuery, NonceQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<NonceQuery, NonceQueryVariables>(
+    NonceDocument,
+    options
+  )
+}
+export type NonceQueryHookResult = ReturnType<typeof useNonceQuery>
+export type NonceLazyQueryHookResult = ReturnType<typeof useNonceLazyQuery>
+export type NonceQueryResult = Apollo.QueryResult<
+  NonceQuery,
+  NonceQueryVariables
+>
+export const MintPoapDocument = gql`
+  mutation MintPoap {
+    mintPoap {
+      id
+      qrHash
+      daoAddress
+    }
+  }
+`
+export type MintPoapMutationFn = Apollo.MutationFunction<
+  MintPoapMutation,
+  MintPoapMutationVariables
+>
+
+/**
+ * __useMintPoapMutation__
+ *
+ * To run a mutation, you first call `useMintPoapMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMintPoapMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [mintPoapMutation, { data, loading, error }] = useMintPoapMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMintPoapMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    MintPoapMutation,
+    MintPoapMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<MintPoapMutation, MintPoapMutationVariables>(
+    MintPoapDocument,
+    options
+  )
+}
+export type MintPoapMutationHookResult = ReturnType<typeof useMintPoapMutation>
+export type MintPoapMutationResult = Apollo.MutationResult<MintPoapMutation>
+export type MintPoapMutationOptions = Apollo.BaseMutationOptions<
+  MintPoapMutation,
+  MintPoapMutationVariables
+>

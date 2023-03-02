@@ -3,45 +3,9 @@ import { SiweMessage } from 'siwe'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ConnectKitButton } from 'connectkit'
 import { NoSsr } from '../core/NoSsr'
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client'
 import Router from 'next/router'
 import { apolloClient } from '@/lib/apollo-client'
-
-const NONCE = gql(/* GraphQL */ `
-  query Nonce {
-    nonce
-  }
-`)
-
-const LOGIN = gql(/* GraphQL */ `
-  mutation Login(
-    $domain: String!
-    $address: String!
-    $nonce: String!
-    $statement: String!
-    $uri: String!
-    $version: String!
-    $chainId: Int!
-    $issuedAt: String!
-    $signature: String!
-  ) {
-    login(
-      data: {
-        message: {
-          domain: $domain
-          address: $address
-          nonce: $nonce
-          statement: $statement
-          uri: $uri
-          version: $version
-          chainId: $chainId
-          issuedAt: $issuedAt
-        }
-        signature: $signature
-      }
-    )
-  }
-`)
+import { useLoginMutation, useNonceLazyQuery } from '../types'
 
 export const Login = () => {
   return (
@@ -94,8 +58,8 @@ interface SignInButtonProps {
 }
 
 const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
-  const [nonce, { called, loading, data }] = useLazyQuery(NONCE)
-  const [login] = useMutation(LOGIN)
+  const [nonce, { called, loading, data }] = useNonceLazyQuery()
+  const [login] = useLoginMutation()
   const fetchingNonce = useRef<boolean>(false)
   const [loginState, setLoginState] = useState<LoginState>(initialLoginState)
   const { chain: activeChain } = useNetwork()
