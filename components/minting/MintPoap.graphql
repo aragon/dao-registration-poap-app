@@ -1,0 +1,7 @@
+mutation MintPoap {
+  mintPoap {
+    id
+    qrHash
+    daoAddress
+  }
+}
