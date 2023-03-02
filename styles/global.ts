@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 export default createGlobalStyle`
   html,
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
     font-weight: 400;
     font-size: 62.5%; /* base 10px */
     overscroll-behavior: none;

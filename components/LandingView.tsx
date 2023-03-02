@@ -1,6 +1,5 @@
 import { ApolloError } from '@apollo/client'
 import { useState } from 'react'
-import { LandingLayout } from './layouts/LandingLayout'
 import { useMintPoapMutation } from './types'
 
 type ErrorType = 'red' | 'yellow'
@@ -56,10 +55,8 @@ export const LandingView = () => {
     }
   }
   return (
-    <LandingLayout>
-      <div>
-        <button onClick={handleMintPoap}>Mint POAP</button>
-      </div>
-    </LandingLayout>
+    <div>
+      <button onClick={handleMintPoap}>Mint POAP</button>
+    </div>
   )
 }
