@@ -1,6 +1,27 @@
 import { Login } from '@/components/auth/Login'
-import { H1 } from '@/components/core/Typography'
+import { Caption, H1 } from '@/components/core/Typography'
+import { LandingLayout } from '@/components/layouts/LandingLayout'
+import Svg from '@/components/svgs'
 import Head from 'next/head'
+import styled from 'styled-components'
+
+const ClaimTextContainer = styled.div`
+  width: 59.2rem;
+  text-align: center;
+`
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-width: 32rem;
+  gap: 1.2rem;
+
+  ${({ theme }) => theme.bp.md} {
+    display: flex;
+    width: 32rem;
+  }
+`
 
 export default function Home() {
   return (
@@ -12,8 +33,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <H1>Welcome to POAP Aragon Claim</H1>
-        <Login />
+        <LandingLayout>
+          <Svg name="logo" />
+          <Svg name="poap" size={28} />
+          <ClaimTextContainer>
+            <H1>Claim your POAP for launching your DAO with Aragon App!</H1>
+          </ClaimTextContainer>
+          <LoginContainer>
+            <Login />
+            <Caption $color="neutral500">
+              Only wallet addresses whose DAO was made with Aragon can claim
+              POAPs.
+            </Caption>
+          </LoginContainer>
+        </LandingLayout>
       </main>
     </>
   )

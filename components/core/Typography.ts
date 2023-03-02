@@ -6,8 +6,7 @@ interface TypographyProps {
 }
 
 const fonts = {
-  primary: 'Inter',
-  secondary: 'IBM Plex Mono',
+  primary: 'Manrope',
 }
 
 const headerSharedStyles = css<TypographyProps>`
@@ -16,19 +15,20 @@ const headerSharedStyles = css<TypographyProps>`
   font-style: normal;
   margin: 0;
   color: ${(props) =>
-    props.$color ? props.theme.colors[props.$color] : theme.colors.green900};
+    props.$color ? props.theme.colors[props.$color] : theme.colors.neutral800};
 `
 
 const h1Styles = css`
   ${headerSharedStyles}
-  font-family: ${fonts.secondary};
+  font-family: ${fonts.primary};
   font-size: 2.4rem;
   line-height: 3.1rem;
+  line-height: 120%;
 `
 
 const h2Styles = css`
   ${headerSharedStyles}
-  font-family: ${fonts.secondary};
+  font-family: ${fonts.primary};
   font-size: 1.6rem;
   font-weight: 600;
   line-height: 2.1rem;
@@ -45,17 +45,19 @@ const h3Styles = css`
 const bodyStyles = css`
   ${headerSharedStyles}
   font-family: ${fonts.primary};
-  font-weight: 500;
+  font-style: normal;
+  font-weight: 600;
   font-size: 1.6rem;
-  line-height: 1.9rem;
+  line-height: 150%;
 `
 
 const captionStyles = css`
   ${headerSharedStyles}
   font-family: ${fonts.primary};
-  font-weight: 400;
-  font-size: 1.3rem;
-  line-height: 1.6rem;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.28rem;
+  line-height: 150%;
 `
 
 const captionBoldStyles = css`

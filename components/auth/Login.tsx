@@ -6,6 +6,7 @@ import { NoSsr } from '../core/NoSsr'
 import Router from 'next/router'
 import { apolloClient } from '@/lib/apollo-client'
 import { useLoginMutation, useNonceLazyQuery } from '../types'
+import Button from '../core/Button'
 
 export const Login = () => {
   return (
@@ -209,5 +210,5 @@ const SignInButton = ({ onClick, isConnected, address }: SignInButtonProps) => {
     }
   }
 
-  return <button onClick={handleClick}>Sign in with Ethereum</button>
+  return <Button onClick={handleClick}>Connect Wallet</Button>
 }
