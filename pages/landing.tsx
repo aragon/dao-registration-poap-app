@@ -17,7 +17,7 @@ const LandingPage = () => {
   const handleMintPoap = async () => {
     try {
       const { data } = await mintPoap()
-      if (data.mintPoap.status === 'MINTED') {
+      if (data?.mintPoap.id) {
         setMintError(null)
         // TODO: Enable see your POAP in gallery
       }
