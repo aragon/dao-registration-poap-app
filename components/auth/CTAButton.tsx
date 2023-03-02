@@ -1,5 +1,5 @@
 import { ConnectKitButton } from 'connectkit'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import Button from '../core/Button'
 import { NoSsr } from '../core/NoSsr'
@@ -13,10 +13,12 @@ const DEFAULT_CAPTION =
 export const CTAButton = () => {
   const { isConnected } = useAccount()
   const { canClaimPoap, handleMintPoap, mintError, mintStatus } = useMintPoap()
+  const [eventId, setEventId] = useState<number | null>(null)
 
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {
       await handleMintPoap()
+      setEventId(1)
     }
   }
 
