@@ -33,6 +33,8 @@ export const CTAButton = () => {
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {
       await handleMintPoap()
+    } else if (mintStatus === 'MINTED') {
+      window.open(poapGalleryUrl, '_blank')
     }
   }
 
@@ -71,7 +73,10 @@ export const CTAButton = () => {
             onClick={handleMintPoapClick}
             isLoading={mintStatus === 'MINTING'}
           >
-            Claim your POAP
+            {mintStatus === 'MINTED'
+              ? 'Check out in POAP Gallery'
+              : 'Claim your POAP'}
+            {mintStatus === 'MINTED' && <Svg name="arrow-right" />}
           </Button>
           {mintError?.message ? (
             getErrorComponent(mintError)

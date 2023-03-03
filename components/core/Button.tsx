@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import LoadingSpinner from './LoadingSpinner'
-import { Body } from './Typography'
+import { bodyStyles } from './Typography'
 
 interface ButtonWrapperProps {
   isLoading: boolean
@@ -17,6 +17,8 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>`
   gap: 2rem;
   align-items: center;
   display: flex;
+  ${bodyStyles}
+  color: ${(props) => props.theme.colors.neutral000};
 
   &:disabled {
     opacity: 0.5;
@@ -45,9 +47,7 @@ const Button = ({
     onClick={disabled || isLoading ? () => console.log('disabled') : onClick}
   >
     {isLoading && <LoadingSpinner />}
-    <Body $color="neutral000">
-      {isLoading ? 'Claiming your POAP' : children}
-    </Body>
+    {isLoading ? 'Claiming your POAP' : children}
   </ButtonWrapper>
 )
 

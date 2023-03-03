@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import logoSvg from './logo.svg'
 import poapSvg from './poap.svg'
 import warningSvg from './warning.svg'
+import arrowRightSvg from './arrow-right.svg'
 
 interface SvgsMap {
   [key: string]: React.ElementType
@@ -16,6 +17,7 @@ export const SvgsMapping = {
   poap: poapSvg,
   warning: warningSvg,
   error: warningSvg,
+  'arrow-right': arrowRightSvg,
 } as SvgsMap
 
 export type SvgName = keyof typeof SvgsMapping

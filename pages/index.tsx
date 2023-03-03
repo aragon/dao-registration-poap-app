@@ -1,4 +1,5 @@
 import { CTAButton } from '@/components/auth/CTAButton'
+import { useMintPoap } from '@/components/auth/useMintPoap'
 import { H1 } from '@/components/core/Typography'
 import { LandingLayout } from '@/components/layouts/LandingLayout'
 import Svg from '@/components/svgs'
@@ -11,6 +12,8 @@ const ClaimTextContainer = styled.div`
 `
 
 export default function Home() {
+  const { mintStatus } = useMintPoap()
+
   return (
     <>
       <Head>
@@ -24,10 +27,16 @@ export default function Home() {
           <Svg name="logo" />
           <Svg name="poap" size={28} />
           <ClaimTextContainer>
-            <H1>
-              Claim your POAP for launching your
-              <br /> DAO with Aragon App!
-            </H1>
+            {mintStatus === 'MINTED' ? (
+              <H1>
+                You have successfully <br /> claimed your Aragon POAP!
+              </H1>
+            ) : (
+              <H1>
+                Claim your POAP for launching your
+                <br /> DAO with Aragon App!
+              </H1>
+            )}
           </ClaimTextContainer>
           <CTAButton />
         </LandingLayout>
