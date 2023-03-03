@@ -42,7 +42,7 @@ const h3Styles = css`
   line-height: 1.9rem;
 `
 
-const bodyStyles = css`
+export const bodyStyles = css`
   ${headerSharedStyles}
   font-family: ${fonts.primary};
   font-style: normal;

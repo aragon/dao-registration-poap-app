@@ -15,7 +15,7 @@ export type MintError = {
   type: ErrorType
 }
 
-type MintStatus =
+export type MintStatus =
   | 'PENDING'
   | 'VALIDATING'
   | 'ENABLED'
