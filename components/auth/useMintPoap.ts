@@ -108,7 +108,7 @@ export const useMintPoap = () => {
         } else {
           console.error(error)
           setMintError({
-            message: 'API Error',
+            message: 'Something went wrong, please try again later',
             type: 'error',
           })
         }
@@ -116,7 +116,7 @@ export const useMintPoap = () => {
     } else {
       console.error(error)
       setMintError({
-        message: `Not Apollo error  ${error} `,
+        message: `Something went wrong, please try again later`,
         type: 'error',
       })
     }
