@@ -3,12 +3,21 @@ import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import Button from '../core/Button'
 import { NoSsr } from '../core/NoSsr'
-import { Caption } from '../core/Typography'
-import { useMintPoap } from './useMintPoap'
+import { Caption, CaptionBold } from '../core/Typography'
+import { MintError, useMintPoap } from './useMintPoap'
 import styled from 'styled-components'
+import Input from '../core/Input'
+import Svg from '../svgs'
 
 const DEFAULT_CAPTION =
   'Only wallet addresses whose DAO was made with Aragon can claim POAPs.'
+
+const getErrorComponent = ({ type, message }: MintError) => (
+  <CaptionBold $color={type === 'error' ? 'critical' : type}>
+    <Svg name={type} color={type} size={5} />
+    {message}
+  </CaptionBold>
+)
 
 export const CTAButton = () => {
   const { isConnected } = useAccount()
@@ -49,6 +58,7 @@ export const CTAButton = () => {
     return (
       <NoSsr>
         <ButtonContainer>
+          <Input placeholder="ens/address" />
           <Button
             disabled={mintStatus !== 'ENABLED'}
             onClick={handleMintPoapClick}
@@ -56,7 +66,11 @@ export const CTAButton = () => {
           >
             Claim POAP
           </Button>
-          <Caption>{mintError?.message ?? DEFAULT_CAPTION}</Caption>
+          {mintError?.message ? (
+            getErrorComponent(mintError)
+          ) : (
+            <Caption>{DEFAULT_CAPTION}</Caption>
+          )}
         </ButtonContainer>
       </NoSsr>
     )

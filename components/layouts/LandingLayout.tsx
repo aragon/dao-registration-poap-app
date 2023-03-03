@@ -11,8 +11,7 @@ export const LandingLayout = ({ children }: LandingLayoutProps) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  padding-top: 4.8rem;
+  padding: 4.8rem 2.4rem 2.4rem 2rem;
   align-items: center;
   width: 100vw;
   height: 100vh;

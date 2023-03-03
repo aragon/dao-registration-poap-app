@@ -4,9 +4,9 @@ import { useAccount } from 'wagmi'
 import { useCanClaimPoapLazyQuery, useMintPoapMutation } from '../types'
 import { useLogin } from './useLogin'
 
-type ErrorType = 'red' | 'yellow'
+type ErrorType = 'error' | 'warning'
 
-type MintError = {
+export type MintError = {
   message: string
   type: ErrorType
 }
@@ -90,18 +90,18 @@ export const useMintPoap = () => {
         if (extensions?.code === 'INVALID_ADDRESS_ERROR') {
           setMintError({
             message,
-            type: 'red',
+            type: 'error',
           })
         } else if (extensions?.code === 'ALREADY_MINTED_ERROR') {
           setMintError({
             message,
-            type: 'yellow',
+            type: 'warning',
           })
         } else {
           console.error(error)
           setMintError({
             message: 'API Error',
-            type: 'red',
+            type: 'error',
           })
         }
       }
@@ -109,7 +109,7 @@ export const useMintPoap = () => {
       console.error(error)
       setMintError({
         message: `Not Apollo error  ${error} `,
-        type: 'red',
+        type: 'error',
       })
     }
   }

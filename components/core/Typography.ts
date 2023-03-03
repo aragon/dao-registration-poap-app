@@ -63,9 +63,13 @@ const captionStyles = css`
 const captionBoldStyles = css`
   ${headerSharedStyles}
   font-family: ${fonts.primary};
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.3rem;
-  line-height: 1.6rem;
+  line-height: 150%;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
 `
 
 export const H1 = styled.h1`
