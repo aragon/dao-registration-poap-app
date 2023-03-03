@@ -6,8 +6,19 @@ import Head from 'next/head'
 import styled from 'styled-components'
 
 const ClaimTextContainer = styled.div`
-  width: 59.2rem;
+  max-width: 59.2rem;
   text-align: center;
+`
+
+const LogoContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8rem;
+
+  ${({ theme }) => theme.bp.md} {
+    justify-content: center;
+  }
 `
 
 export default function Home() {
@@ -21,7 +32,9 @@ export default function Home() {
       </Head>
       <main>
         <LandingLayout>
-          <Svg name="logo" />
+          <LogoContainer>
+            <Svg name="logo" />
+          </LogoContainer>
           <Svg name="poap" size={28} />
           <ClaimTextContainer>
             <H1>
