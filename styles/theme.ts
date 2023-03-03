@@ -21,9 +21,14 @@ const theme = {
   },
   colors: {
     neutral000: '#FFFFFF',
+    neutral100: '#E4E7EB',
     neutral500: '#616E7C',
     neutral800: '#1D2B2A',
     primary400: '#3164FA',
+    primary300: '#628CFE',
+    warning: '#93430F',
+    critical: '#901132',
+    error: '#F93636',
   },
 }
 
