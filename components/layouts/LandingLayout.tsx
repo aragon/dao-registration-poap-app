@@ -13,18 +13,19 @@ const Container = styled.div`
   flex-direction: column;
   padding: 4.8rem 2.4rem 2.4rem 2rem;
   align-items: center;
+  justify-content: flex-start;
   width: 100vw;
   height: 100vh;
-  gap: 3.2rem;
   background: url(images/background-mobile.png) no-repeat center center fixed;
+  gap: 3.2rem;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 
   ${({ theme }) => theme.bp.md} {
-    flex-direction: column;
     background: url(images/background-desktop.png) no-repeat center center fixed;
+    flex-direction: column;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
