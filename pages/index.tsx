@@ -24,7 +24,10 @@ export default function Home() {
           <Svg name="logo" />
           <Svg name="poap" size={28} />
           <ClaimTextContainer>
-            <H1>Claim your POAP for launching your DAO with Aragon App!</H1>
+            <H1>
+              Claim your POAP for launching your
+              <br /> DAO with Aragon App!
+            </H1>
           </ClaimTextContainer>
           <CTAButton />
         </LandingLayout>

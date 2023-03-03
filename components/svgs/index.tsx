@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'react'
 import { CSSProperties } from 'styled-components'
 import theme, { ColorName } from '../../styles/theme'
+import styled from 'styled-components'
 
 import logoSvg from './logo.svg'
 import poapSvg from './poap.svg'
@@ -55,7 +56,18 @@ const Svg = ({ name, width, height, size, color, ...divProps }: SvgProps) => {
     styles['--svg-color'] = theme.colors[color as ColorName] || '#111827'
   }
 
-  return <SvgComponent style={{ ...styles, ...divProps.style }} />
+  return (
+    <SvgContainer>
+      <SvgComponent style={{ ...styles, ...divProps.style }} />
+    </SvgContainer>
+  )
 }
+
+const SvgContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+`
 
 export default Svg

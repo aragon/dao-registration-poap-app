@@ -1,5 +1,5 @@
 import { ConnectKitButton } from 'connectkit'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import Button from '../core/Button'
 import { NoSsr } from '../core/NoSsr'
@@ -15,10 +15,12 @@ const DEFAULT_CAPTION =
   'Only wallet addresses whose DAO was made with Aragon can claim POAPs.'
 
 const getErrorComponent = ({ type, message }: MintError) => (
-  <CaptionBold $color={type === 'error' ? 'critical' : type}>
-    <Svg name={type} color={type} size={5} />
-    {message}
-  </CaptionBold>
+  <MessageContainer>
+    <Svg name={type} color={type} size={1.5} />
+    <CaptionBold $color={type === 'error' ? 'critical' : type}>
+      {message}
+    </CaptionBold>
+  </MessageContainer>
 )
 
 export const CTAButton = () => {
@@ -69,7 +71,7 @@ export const CTAButton = () => {
             onClick={handleMintPoapClick}
             isLoading={mintStatus === 'MINTING'}
           >
-            Claim POAP
+            Claim your POAP
           </Button>
           {mintError?.message ? (
             getErrorComponent(mintError)
@@ -102,11 +104,22 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  max-width: 32rem;
+  align-items: center;
+  justify-content: center;
+  max-width: 48rem;
   gap: 1.2rem;
 
   ${({ theme }) => theme.bp.md} {
-    display: flex;
-    width: 32rem;
+    width: 48rem;
   }
+`
+
+const MessageContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  max-width: 48rem;
 `

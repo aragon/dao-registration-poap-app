@@ -1,2 +1,2 @@
 export const shortenedAddress = (address: string | undefined) =>
-  address ? `${address.slice(0, 6)}...${address.slice(-4)}` : null
+  address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''
