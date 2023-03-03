@@ -1,10 +1,10 @@
 import { CTAButton } from '@/components/auth/CTAButton'
-import { useMintPoap } from '@/components/auth/useMintPoap'
 import { H1 } from '@/components/core/Typography'
 import { LandingLayout } from '@/components/layouts/LandingLayout'
 import Svg from '@/components/svgs'
 import Head from 'next/head'
 import styled from 'styled-components'
+import { useState } from 'react'
 
 const ClaimTextContainer = styled.div`
   max-width: 59.2rem;
@@ -15,7 +15,8 @@ const LogoContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 8rem;
+  align-items: center;
+  margin-bottom: 2.4rem;
 
   ${({ theme }) => theme.bp.md} {
     justify-content: center;
@@ -23,7 +24,7 @@ const LogoContainer = styled.div`
 `
 
 export default function Home() {
-  const { mintStatus } = useMintPoap()
+  const [isMinted, setIsMinted] = useState(false)
 
   return (
     <>
@@ -38,9 +39,9 @@ export default function Home() {
           <LogoContainer>
             <Svg name="logo" />
           </LogoContainer>
-          <Svg name="poap" size={28} />
+          <Svg name="poap" size={30} />
           <ClaimTextContainer>
-            {mintStatus === 'MINTED' ? (
+            {isMinted ? (
               <H1>
                 You have successfully <br /> claimed your Aragon POAP!
               </H1>
@@ -51,7 +52,7 @@ export default function Home() {
               </H1>
             )}
           </ClaimTextContainer>
-          <CTAButton />
+          <CTAButton onMinted={() => setIsMinted(true)} />
         </LandingLayout>
       </main>
     </>

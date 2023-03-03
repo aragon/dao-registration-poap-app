@@ -23,7 +23,11 @@ const getErrorComponent = ({ type, message }: MintError) => (
   </MessageContainer>
 )
 
-export const CTAButton = () => {
+interface CTAButtonProps {
+  onMinted: () => void
+}
+
+export const CTAButton = ({ onMinted }: CTAButtonProps) => {
   const { isConnected, address } = useAccount()
   const { ens } = useEns(address)
   const { canClaimPoap, handleMintPoap, mintError, mintStatus, mintedPoap } =
@@ -34,6 +38,7 @@ export const CTAButton = () => {
     if (mintStatus === 'ENABLED') {
       await handleMintPoap()
     } else if (mintStatus === 'MINTED') {
+      onMinted()
       window.open(poapGalleryUrl, '_blank')
     }
   }
@@ -69,7 +74,7 @@ export const CTAButton = () => {
             <Input placeholder={ens ?? shortenedAddress(address)} disabled />
           )}
           <Button
-            disabled={mintStatus !== 'ENABLED'}
+            disabled={!['ENABLED', 'MINTED'].includes(mintStatus)}
             onClick={handleMintPoapClick}
             isLoading={mintStatus === 'MINTING'}
           >
@@ -111,7 +116,7 @@ const ButtonContainer = styled.div`
   text-align: center;
   align-items: center;
   justify-content: center;
-  max-width: 48rem;
+  width: 100%;
   gap: 1.2rem;
 
   ${({ theme }) => theme.bp.md} {
