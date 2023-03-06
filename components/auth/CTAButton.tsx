@@ -30,9 +30,9 @@ interface CTAButtonProps {
 export const CTAButton = ({ onMinted }: CTAButtonProps) => {
   const { isConnected, address } = useAccount()
   const { ens } = useEns(address)
-  const { canClaimPoap, handleMintPoap, mintError, mintStatus, mintedPoap } =
-    useMintPoap()
-  const poapGalleryUrl = `https://poap.gallery/event/${mintedPoap?.event?.externalId}`
+  const displayAddress = ens ?? shortenedAddress(address)
+  const { canClaimPoap, handleMintPoap, mintError, mintStatus } = useMintPoap()
+  const poapGalleryUrl = `https://app.poap.xyz/scan/${displayAddress}`
 
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {
@@ -70,9 +70,7 @@ export const CTAButton = ({ onMinted }: CTAButtonProps) => {
     return (
       <NoSsr>
         <ButtonContainer>
-          {isConnected && (
-            <Input placeholder={ens ?? shortenedAddress(address)} disabled />
-          )}
+          {isConnected && <Input placeholder={displayAddress} disabled />}
           <Button
             disabled={!['ENABLED', 'MINTED'].includes(mintStatus)}
             onClick={handleMintPoapClick}
