@@ -1,3 +1,4 @@
+import getConfig from 'next/config'
 import {
   ApolloClient,
   ApolloLink,
@@ -6,13 +7,15 @@ import {
   InMemoryCache,
 } from '@apollo/client'
 
+const { publicRuntimeConfig } = getConfig()
+
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
+  uri: publicRuntimeConfig.api,
 })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-  const token = localStorage.getItem(process.env.NEXT_PUBLIC_LOGIN_KEY)
+  const token = localStorage.getItem(publicRuntimeConfig.loginKey ?? '')
   operation.setContext({
     headers: {
       authorization: token ? `Bearer ${token}` : '',
