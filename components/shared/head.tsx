@@ -1,9 +1,11 @@
 import Head from 'next/head'
+import getConfig from 'next/config'
+
+const { publicRuntimeConfig } = getConfig()
+console.log('🚀 ~ file: head.tsx:5 ~ publicRuntimeConfig:', publicRuntimeConfig)
 
 const TITLE = 'Aragon | Build Better, Together'
 const DESCRIPTION = 'Claim your POAP for launching a DAO on Aragon'
-
-const origin = 'https://poap-claim.aragon.org/'
 
 export const AppHead = ({
   description,
@@ -44,7 +46,11 @@ export const AppHead = ({
         content={pageDescription}
         key="og:description"
       />
-      <meta property="og:url" content={`${origin}${pathname}`} key="og:url" />
+      <meta
+        property="og:url"
+        content={`${window.location.origin}${pathname}`}
+        key="og:url"
+      />
       <link rel="icon" href="/favicon.ico" sizes="any" key="icon:ico" />
       <link
         rel="icon"
