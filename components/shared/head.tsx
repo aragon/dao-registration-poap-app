@@ -4,6 +4,16 @@ import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 console.log('🚀 ~ file: head.tsx:5 ~ publicRuntimeConfig:', publicRuntimeConfig)
 console.log(
+  '🚀 ~ file: head.tsx:6 ~ publicRuntimeConfig.api',
+  publicRuntimeConfig.api
+)
+
+console.log(
+  '🚀 ~ file: head.tsx:12 ~ publicRuntimeConfig.testVar:',
+  publicRuntimeConfig.testVar
+)
+
+console.log(
   '🚀 ~ file: head.tsx:7 ~ process.env.NODE_ENV:',
   process.env.NODE_ENV
 )

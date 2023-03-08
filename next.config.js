@@ -14,6 +14,7 @@ const nextConfig = {
     },
     loginKey: process.env.NEXT_PUBLIC_LOGIN_KEY,
     networkId: process.env.NEXT_PUBLIC_NETWORK_ID,
+    testVar: process.env.TEST_VAR,
   },
   webpack(config) {
     config.module.rules.push({
