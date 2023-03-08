@@ -8,6 +8,7 @@ on:
       - 'develop'
       - 'main'
       - 'DOPS-449*' ## temporal branch for testing only
+      - 'test-env'
     paths-ignore:
       # - 'README.md'
       - 'Dockerfile*'
@@ -47,8 +48,6 @@ jobs:
 
       - name: Get branch name, git commit hash and current time in secs
         id: vars
-        env:
-          TEST_VAR: 'test env var'
         run: |
           branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
           echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
@@ -91,6 +90,7 @@ jobs:
           build-args: |
             COMMIT_SHA=${{ steps.vars.outputs.GIT_HASH_SHORT }}
             ENVIRONMENT=${{ steps.vars.outputs.CURRENT_ENVIRONMENT }}
+            TEST_VAR=Hello
           push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

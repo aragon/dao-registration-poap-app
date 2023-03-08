@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components'
 import { WagmiConfig } from 'wagmi'
 import GlobalStyles from '../styles/global'
 
-export default function App({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <AppHead />
@@ -26,3 +26,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   )
 }
+
+export default App

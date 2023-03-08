@@ -23,7 +23,9 @@ const LogoContainer = styled.div`
   }
 `
 
-export default function Home() {
+export default function Home({ api }: { api: string }) {
+  console.log('🚀 ~ file: index.tsx:27 ~ Home ~ api:', api)
+
   const [isMinted, setIsMinted] = useState(false)
 
   return (
@@ -57,4 +59,12 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      api: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
+    },
+  }
 }

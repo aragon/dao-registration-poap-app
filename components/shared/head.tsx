@@ -23,6 +23,11 @@ console.log(
   process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL
 )
 
+console.log(
+  '🚀 ~ file: head.tsx:9 ~ publicRuntimeConfig.myEnvVar',
+  publicRuntimeConfig.myEnvVar
+)
+
 const TITLE = 'Aragon | Build Better, Together'
 const DESCRIPTION = 'Claim your POAP for launching a DAO on Aragon'
 
