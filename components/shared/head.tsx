@@ -3,6 +3,11 @@ import getConfig from 'next/config'
 
 const { publicRuntimeConfig } = getConfig()
 console.log('🚀 ~ file: head.tsx:5 ~ publicRuntimeConfig:', publicRuntimeConfig)
+console.log(
+  '🚀 ~ file: head.tsx:7 ~ process.env.NODE_ENV:',
+  process.env.NODE_ENV
+)
+console.log('🚀 ~ file: head.tsx:8 ~ process.env:', process.env)
 
 const TITLE = 'Aragon | Build Better, Together'
 const DESCRIPTION = 'Claim your POAP for launching a DAO on Aragon'
