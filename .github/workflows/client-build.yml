@@ -7,11 +7,12 @@ on:
     branches:
       - 'develop'
       - 'main'
-      - 'DOPS-449*'   ## temporal branch for testing only
+      - 'DOPS-449*' ## temporal branch for testing only
     paths-ignore:
       # - 'README.md'
       - 'Dockerfile*'
-      - '.env*'
+      - '.env.local'
+      - '.env'
       - '.vscode'
       - '.dockerignore'
       - 'docker.env'
@@ -28,7 +29,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: "npm"
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -86,8 +87,8 @@ jobs:
           context: .
           file: ./Dockerfile.prod
           build-args: |
-             COMMIT_SHA=${{ steps.vars.outputs.GIT_HASH_SHORT }}
-             ENVIRONMENT=${{ steps.vars.outputs.CURRENT_ENVIRONMENT }}
+            COMMIT_SHA=${{ steps.vars.outputs.GIT_HASH_SHORT }}
+            ENVIRONMENT=${{ steps.vars.outputs.CURRENT_ENVIRONMENT }}
           push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
