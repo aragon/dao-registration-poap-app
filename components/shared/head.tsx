@@ -7,6 +7,7 @@ console.log(
   '🚀 ~ file: head.tsx:7 ~ process.env.NODE_ENV:',
   process.env.NODE_ENV
 )
+
 console.log(
   '🚀 ~ file: head.tsx:8 ~ process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL',
   process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL
