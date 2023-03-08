@@ -1,4 +1,4 @@
-# DAO Registration POAP API
+# DAO Registration POAP APP (FrontEnd)
 
 This is the Client for the DAO Registration POAP. It is a NextJS API that allows users to mint POAPs whenever they launch an Aragon Community.
 
