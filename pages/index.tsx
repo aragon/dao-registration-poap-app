@@ -4,6 +4,8 @@ import { LandingLayout } from '@/components/layouts/LandingLayout'
 import Svg from '@/components/svgs'
 import styled from 'styled-components'
 import { useState } from 'react'
+import Image from 'next/image'
+import { NoSsr } from '@/components/core/NoSsr'
 
 const ClaimTextContainer = styled.div`
   max-width: 59.2rem;
@@ -24,6 +26,7 @@ const LogoContainer = styled.div`
 
 export default function Home() {
   const [isMinted, setIsMinted] = useState(false)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
   return (
     <main>
@@ -31,7 +34,21 @@ export default function Home() {
         <LogoContainer>
           <Svg name="logo" />
         </LogoContainer>
-        <Svg name="poap" size={30} />
+        {isMobile ? (
+          <NoSsr>
+            <Image
+              src="/images/og-image.png"
+              alt="POAP"
+              width={300}
+              height={300}
+              priority={true}
+            />
+          </NoSsr>
+        ) : (
+          <NoSsr>
+            <Svg name="poap" size={30} />
+          </NoSsr>
+        )}
         <ClaimTextContainer>
           {isMinted ? (
             <H1>
