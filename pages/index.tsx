@@ -30,9 +30,8 @@ interface HomeProps {
   api2?: string
 }
 
-function Home({ api1, api2 }: HomeProps) {
-  console.log('🚀 ~ file: index.tsx:34 ~ Home ~ api2:', api2)
-  console.log('🚀 ~ file: index.tsx:34 ~ Home ~ api1:', api1)
+function Home(props: HomeProps) {
+  console.log('🚀 ~ file: index.tsx:34 ~ Home ~ props:', props)
   const [isMinted, setIsMinted] = useState(false)
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
