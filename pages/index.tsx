@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import Image from 'next/image'
 import { NoSsr } from '@/components/core/NoSsr'
+import getConfig from 'next/config'
 
 const ClaimTextContainer = styled.div`
   max-width: 59.2rem;
@@ -24,7 +25,14 @@ const LogoContainer = styled.div`
   }
 `
 
-export default function Home() {
+interface HomeProps {
+  api1?: string
+  api2?: string
+}
+
+function Home({ api1, api2 }: HomeProps) {
+  console.log('🚀 ~ file: index.tsx:34 ~ Home ~ api2:', api2)
+  console.log('🚀 ~ file: index.tsx:34 ~ Home ~ api1:', api1)
   const [isMinted, setIsMinted] = useState(false)
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
 
@@ -66,3 +74,16 @@ export default function Home() {
     </main>
   )
 }
+
+export async function getServerSideProps() {
+  const { publicRuntimeConfig } = getConfig()
+
+  return {
+    props: {
+      api1: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
+      api2: publicRuntimeConfig.api,
+    },
+  }
+}
+
+export default Home
