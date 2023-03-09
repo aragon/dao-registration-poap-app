@@ -12,7 +12,7 @@ import useEns from '../hooks/useEns'
 import { shortenedAddress } from '@/utils/display'
 
 const DEFAULT_CAPTION =
-  'Only wallet addresses whose DAO was made with Aragon can claim POAPs.'
+  'Only wallet addresses whose DAO was made with Aragon can claim this POAP.'
 
 const getErrorComponent = ({ type, message }: MintError) => (
   <MessageContainer>
@@ -31,8 +31,11 @@ export const CTAButton = ({ onMinted }: CTAButtonProps) => {
   const { isConnected, address } = useAccount()
   const { ens } = useEns(address)
   const displayAddress = ens ?? shortenedAddress(address)
-  const { canClaimPoap, handleMintPoap, mintError, mintStatus } = useMintPoap()
-  const poapGalleryUrl = `https://app.poap.xyz/scan/${ens ?? address}`
+  const { canClaimPoap, handleMintPoap, mintError, mintStatus, mintedPoap } =
+    useMintPoap()
+  const poapGalleryUrl = mintedPoap?.tokenId
+    ? `https://app.poap.xyz/token/${mintedPoap.tokenId}`
+    : `https://poap.gallery/event/${mintedPoap?.event.externalId}`
 
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {

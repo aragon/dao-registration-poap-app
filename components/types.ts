@@ -16,6 +16,24 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type BulkActionResult = {
+  __typename?: 'BulkActionResult';
+  resolved: Scalars['Int'];
+  unresolved: Scalars['Int'];
+};
+
+export type DaoRegistryEvent = {
+  __typename?: 'DaoRegistryEvent';
+  creator: Scalars['String'];
+  dao: Scalars['String'];
+  subdomain: Scalars['String'];
+};
+
+export type DaoRegistryFilterInput = {
+  creator?: InputMaybe<Scalars['String']>;
+  dao?: InputMaybe<Scalars['String']>;
+};
+
 export type ExpirationWarning = {
   __typename?: 'ExpirationWarning';
   claimCodesCount: Scalars['Int'];
@@ -32,16 +50,35 @@ export type ImportPoapEventInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  assignClaimCode: PoapClaimCode;
+  backfillDAORegisteredEvents: BulkActionResult;
+  deleteEvent: Scalars['Boolean'];
   findOrCreateUser: User;
-  grantAdminRole: Scalars['Boolean'];
+  grantAdmin: Scalars['Boolean'];
   importPoapEvent: PoapEvent;
   login: Scalars['Boolean'];
   mintPoap: PoapClaimCode;
-  reassignPendingClaimCodes: ReassignPendingSyncResult;
+  reassignPendingClaimCodes: BulkActionResult;
 };
 
 
-export type MutationGrantAdminRoleArgs = {
+export type MutationAssignClaimCodeArgs = {
+  address: Scalars['String'];
+  daoAddres: Scalars['String'];
+};
+
+
+export type MutationBackfillDaoRegisteredEventsArgs = {
+  count?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationDeleteEventArgs = {
+  externalId: Scalars['Int'];
+};
+
+
+export type MutationGrantAdminArgs = {
   address: Scalars['String'];
 };
 
@@ -80,6 +117,9 @@ export type PoapClaimCode = {
   qrHash: Scalars['String'];
   /** POAP Claim Code */
   status: Scalars['String'];
+  /** Token ID */
+  tokenId?: Maybe<Scalars['Int']>;
+  user: User;
 };
 
 /** A POAP Event */
@@ -99,14 +139,21 @@ export type PoapEvent = {
 
 export type Query = {
   __typename?: 'Query';
+  DAORegisteredEvents: Array<DaoRegistryEvent>;
   activePoapEvents: Array<PoapEvent>;
   allPoapEvents: Array<PoapEvent>;
+  assignedCodes: Array<PoapClaimCode>;
   canClaimPoap: Scalars['Boolean'];
   isMinted: Scalars['Boolean'];
   mintedClaimCode?: Maybe<PoapClaimCode>;
   nonce: Scalars['String'];
   poapEvent: PoapEvent;
   statistics: Statistics;
+};
+
+
+export type QueryDaoRegisteredEventsArgs = {
+  data?: InputMaybe<DaoRegistryFilterInput>;
 };
 
 
@@ -122,12 +169,6 @@ export type QueryIsMintedArgs = {
 
 export type QueryPoapEventArgs = {
   externalId: Scalars['Int'];
-};
-
-export type ReassignPendingSyncResult = {
-  __typename?: 'ReassignPendingSyncResult';
-  resolved: Scalars['Int'];
-  unresolved: Scalars['Int'];
 };
 
 export type SiweMessage = {
@@ -206,12 +247,12 @@ export type NonceQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type NonceQuery = { __typename?: 'Query', nonce: string };
 
-export type MintedPoapFragment = { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, event: { __typename?: 'PoapEvent', externalId: number } };
+export type MintedPoapFragment = { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, tokenId?: number | null, event: { __typename?: 'PoapEvent', externalId: number } };
 
 export type MintPoapMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MintPoapMutation = { __typename?: 'Mutation', mintPoap: { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, event: { __typename?: 'PoapEvent', externalId: number } } };
+export type MintPoapMutation = { __typename?: 'Mutation', mintPoap: { __typename?: 'PoapClaimCode', id: number, qrHash: string, daoAddress: string, tokenId?: number | null, event: { __typename?: 'PoapEvent', externalId: number } } };
 
 export const MintedPoapFragmentDoc = gql`
     fragment MintedPoap on PoapClaimCode {
@@ -221,6 +262,7 @@ export const MintedPoapFragmentDoc = gql`
   event {
     externalId
   }
+  tokenId
 }
     `;
 export const CanClaimPoapDocument = gql`
