@@ -32,7 +32,7 @@ export const CTAButton = ({ onMinted }: CTAButtonProps) => {
   const { ens } = useEns(address)
   const displayAddress = ens ?? shortenedAddress(address)
   const { canClaimPoap, handleMintPoap, mintError, mintStatus } = useMintPoap()
-  const poapGalleryUrl = `https://app.poap.xyz/scan/${displayAddress}`
+  const poapGalleryUrl = `https://app.poap.xyz/scan/${ens ?? address}`
 
   const handleMintPoapClick = async () => {
     if (mintStatus === 'ENABLED') {
@@ -129,5 +129,5 @@ const MessageContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: max-content;
-  max-width: 48rem;
+  max-width: 100%;
 `
