@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 const TITLE = 'Aragon Builder POAP'
-const DESCRIPTION = 'Claim your POAP for launching a DAO on Aragon'
+const DESCRIPTION = 'Claim your POAP for launching your DAO with Aragon!'
 
 const origin = 'https://poap-claim.aragon.org/'
 
