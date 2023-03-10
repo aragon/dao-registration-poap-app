@@ -31,8 +31,6 @@ const LogoContainer = styled.div`
 `
 
 interface Props {
-  DEPLOYMENT_ENV?: string
-  DEPLOYMENT_ENV_GLOBAL?: string
   NEXT_PUBLIC_GRAPHQL_BASE_URL_GLOBAL?: string
   NEXT_PUBLIC_GRAPHQL_BASE_URL?: string
 }
@@ -53,13 +51,13 @@ export default function Home(props: Props) {
   )
 
   console.log(
-    '🚀 ~ file: index.tsx:13 ~ processEnv.DEPLOYMENT_ENV',
-    processEnv.DEPLOYMENT_ENV
+    '🚀 ~ file: index.tsx:13 ~ processEnv.NODE_ENV',
+    processEnv.NODE_ENV
   )
 
   console.log(
-    '🚀 ~ file: index.tsx:13 ~ process.env.DEPLOYMENT_ENV',
-    process.env.DEPLOYMENT_ENV
+    '🚀 ~ file: index.tsx:13 ~ process.env.NODE_ENV',
+    process.env.NODE_ENV
   )
 
   return (
@@ -104,8 +102,6 @@ export default function Home(props: Props) {
 export async function getServerSideProps() {
   return {
     props: {
-      DEPLOYMENT_ENV: process.env.DEPLOYMENT_ENV,
-      DEPLOYMENT_ENV_GLOBAL: global.process.env.DEPLOYMENT_ENV,
       NEXT_PUBLIC_GRAPHQL_BASE_URL_GLOBAL:
         global.process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
       NEXT_PUBLIC_GRAPHQL_BASE_URL: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
