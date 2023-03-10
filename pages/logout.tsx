@@ -4,9 +4,6 @@ import { useRouter } from 'next/router'
 import type { NextPage } from 'next'
 import { apolloClient } from '../lib/apollo-client'
 import { disconnect } from '@wagmi/core'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig } = getConfig()
 
 const LogoutPage: NextPage = () => {
   const router = useRouter()
@@ -14,10 +11,7 @@ const LogoutPage: NextPage = () => {
   const handleLogOut = useCallback(async () => {
     apolloClient.clearStore()
     await disconnect()
-    localStorage.setItem(
-      publicRuntimeConfig.processEnv.NEXT_PUBLIC_LOGIN_KEY,
-      ''
-    )
+    localStorage.setItem(process.env.NEXT_PUBLIC_LOGIN_KEY ?? '', '')
     router.push('/')
   }, [router])
 

@@ -4,9 +4,6 @@ import { useLoginMutation, useNonceQuery } from '../types'
 import { apolloClient } from '@/lib/apollo-client'
 import { disconnect } from '@wagmi/core'
 import { useCallback, useState } from 'react'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig } = getConfig()
 
 export const useLogin = () => {
   const { data } = useNonceQuery()
@@ -51,7 +48,7 @@ export const useLogin = () => {
           })
           if (result?.data?.login) {
             localStorage.setItem(
-              publicRuntimeConfig.processEnv.NEXT_PUBLIC_LOGIN_KEY ?? '',
+              process.env.NEXT_PUBLIC_LOGIN_KEY ?? '',
               signature
             )
             apolloClient.resetStore()
