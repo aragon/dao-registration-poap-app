@@ -38,15 +38,21 @@ jobs:
         if: github.ref == 'refs/heads/test'
         run: npm run test:e2e
 
-  docker-release:
+  set-myvars:
     runs-on: ubuntu-latest
-    needs: setup-and-build
+    needs: [setup-and-build]
+    outputs:
+      BRANCH_NAME: ${{ steps.myvars.outputs.BRANCH_NAME }}
+      GIT_HASH_SHORT: ${{ steps.myvars.outputs.GIT_HASH_SHORT }}
+      DATE_IN_SECS: ${{ steps.myvars.outputs.DATE_IN_SECS }}
+      CURRENT_ENVIRONMENT: ${{ steps.myvars.outputs.CURRENT_ENVIRONMENT }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Get branch name, git commit hash and current time in secs
-        id: vars
+        id: myvars
         run: |
           branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
           echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
@@ -60,6 +66,15 @@ jobs:
             echo "BRANCH_NAME=test" >> $GITHUB_OUTPUT
             echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
           fi
+
+  docker-release:
+    runs-on: ubuntu-latest
+    needs: [set-myvars]
+    if: needs.set-myvars.outputs.CURRENT_ENVIRONMENT != ''
+    environment: ${{ needs.set-myvars.outputs.CURRENT_ENVIRONMENT }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -87,13 +102,16 @@ jobs:
           context: .
           file: ./Dockerfile.prod
           build-args: |
-            COMMIT_SHA=${{ steps.vars.outputs.GIT_HASH_SHORT }}
-            ENVIRONMENT=${{ steps.vars.outputs.CURRENT_ENVIRONMENT }}
+            COMMIT_SHA=${{ needs.set-myvars.outputs.GIT_HASH_SHORT }}
+            ENVIRONMENT=${{ needs.set-myvars.outputs.CURRENT_ENVIRONMENT }}
+            NEXT_PUBLIC_LOGIN_KEY=${{ secrets.NEXT_PUBLIC_LOGIN_KEY }}
+            NEXT_PUBLIC_ALCHEMY_ID=${{ secrets.NEXT_PUBLIC_ALCHEMY_ID }}
+            NEXT_PUBLIC_GRAPHQL_BASE_URL=${{ vars.NEXT_PUBLIC_GRAPHQL_BASE_URL }}
           push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.BRANCH_NAME }}
-            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.BRANCH_NAME }}-${{ steps.vars.outputs.DATE_IN_SECS }}
+            ghcr.io/${{ github.repository }}:${{ needs.set-myvars.outputs.BRANCH_NAME }}
+            ghcr.io/${{ github.repository }}:${{ needs.set-myvars.outputs.BRANCH_NAME }}-${{ needs.set-myvars.outputs.DATE_IN_SECS }}
           labels: ${{ steps.meta.outputs.labels }}
