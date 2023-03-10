@@ -104,8 +104,8 @@ jobs:
           build-args: |
             COMMIT_SHA=${{ needs.set-myvars.outputs.GIT_HASH_SHORT }}
             ENVIRONMENT=${{ needs.set-myvars.outputs.CURRENT_ENVIRONMENT }}
-            NEXT_PUBLIC_LOGIN_KEY=${{ secrets.NEXT_PUBLIC_LOGIN_KEY }}
             NEXT_PUBLIC_ALCHEMY_ID=${{ secrets.NEXT_PUBLIC_ALCHEMY_ID }}
+            NEXT_PUBLIC_LOGIN_KEY=${{ secrets.NEXT_PUBLIC_LOGIN_KEY }}
             NEXT_PUBLIC_GRAPHQL_BASE_URL=${{ vars.NEXT_PUBLIC_GRAPHQL_BASE_URL }}
           push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=gha
