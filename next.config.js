@@ -7,6 +7,7 @@ const nextConfig = {
   output: 'standalone',
   swcMinify: true,
   publicRuntimeConfig: {
+    processEnv: process.env,
     api: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
     alchemy: {
       id: process.env.NEXT_PUBLIC_ALCHEMY_ID,

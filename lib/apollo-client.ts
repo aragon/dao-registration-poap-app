@@ -10,7 +10,7 @@ import {
 const { publicRuntimeConfig } = getConfig()
 
 const httpLink = createHttpLink({
-  uri: publicRuntimeConfig.api,
+  uri: publicRuntimeConfig.processEnv.NEXT_PUBLIC_GRAPHQL_BASE_URL,
 })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
