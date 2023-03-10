@@ -14,7 +14,10 @@ const LogoutPage: NextPage = () => {
   const handleLogOut = useCallback(async () => {
     apolloClient.clearStore()
     await disconnect()
-    localStorage.setItem(publicRuntimeConfig.loginKey, '')
+    localStorage.setItem(
+      publicRuntimeConfig.processEnv.NEXT_PUBLIC_LOGIN_KEY,
+      ''
+    )
     router.push('/')
   }, [router])
 

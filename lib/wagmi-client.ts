@@ -7,8 +7,11 @@ const { publicRuntimeConfig } = getConfig()
 
 export const wagmiClient = createClient(
   getDefaultClient({
-    appName: publicRuntimeConfig.alchemy.appName,
-    alchemyId: publicRuntimeConfig.alchemy.id,
-    chains: publicRuntimeConfig.networkId === '1' ? [mainnet] : [goerli],
+    appName: 'Aragon POAP',
+    alchemyId: publicRuntimeConfig.processEnv.NEXT_PUBLIC_ALCHEMY_ID,
+    chains:
+      publicRuntimeConfig.processEnv.DEPLOYMENT_ENV === 'production'
+        ? [mainnet]
+        : [goerli],
   })
 )

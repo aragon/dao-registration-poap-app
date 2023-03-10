@@ -48,12 +48,6 @@ export const AppHead = ({
       <link rel="icon" href="/favicon.ico" sizes="any" key="icon:ico" />
       <link
         rel="icon"
-        href="/favicon.svg"
-        type="image/svg+xml"
-        key="icon:svg"
-      />
-      <link
-        rel="icon"
         href="/favicon-16x16.png"
         sizes="16x16"
         type="image/png"

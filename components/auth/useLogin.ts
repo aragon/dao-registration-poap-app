@@ -50,7 +50,10 @@ export const useLogin = () => {
             },
           })
           if (result?.data?.login) {
-            localStorage.setItem(publicRuntimeConfig.loginKey ?? '', signature)
+            localStorage.setItem(
+              publicRuntimeConfig.processEnv.NEXT_PUBLIC_LOGIN_KEY ?? '',
+              signature
+            )
             apolloClient.resetStore()
 
             setLoggedIn(true)

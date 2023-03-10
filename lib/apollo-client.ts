@@ -9,13 +9,20 @@ import {
 
 const { publicRuntimeConfig } = getConfig()
 
+const uri =
+  publicRuntimeConfig.processEnv.DEPLOYMENT_ENV === 'production'
+    ? 'https://poap-claim-api.aragon.org/graphql'
+    : 'https://poap-claim-api-dev.aragon.org/graphql'
+
 const httpLink = createHttpLink({
-  uri: publicRuntimeConfig.processEnv.NEXT_PUBLIC_GRAPHQL_BASE_URL,
+  uri,
 })
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-  const token = localStorage.getItem(publicRuntimeConfig.loginKey ?? '')
+  const token = localStorage.getItem(
+    publicRuntimeConfig.processEnv.NEXT_PUBLIC_LOGIN_KEY ?? ''
+  )
   operation.setContext({
     headers: {
       authorization: token ? `Bearer ${token}` : '',
