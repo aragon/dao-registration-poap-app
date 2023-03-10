@@ -1,11 +1,11 @@
 services:
   web:
+    env_file:
+      - .env.local
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
       context: .
     volumes:
       - .:/usr/src/app
-    env_file:
-      - .env.local
     ports:
-      - 3001:3001
+      - 3000:3000

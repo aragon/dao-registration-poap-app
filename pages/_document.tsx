@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
-    const isProduction = process.env.NODE_ENV === 'production'
+    const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT === 'production'
 
     try {
       ctx.renderPage = () =>
