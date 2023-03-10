@@ -9,7 +9,7 @@ Prior running commands, make sure you have installed Docker and Postgres.
 Install dependencies:
 
 ```bash
-yarn
+npm i
 ```
 
 Copy the `.env.example` file to `.env` and fill in the values.
