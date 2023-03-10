@@ -11,7 +11,8 @@ import getConfig from 'next/config'
 const {
   publicRuntimeConfig: { processEnv },
 } = getConfig()
-console.log('🚀 ~ file: index.tsx:13 ~ processEnv:', processEnv)
+
+console.log('🚀 processEnv', processEnv)
 
 const ClaimTextContainer = styled.div`
   max-width: 59.2rem;
@@ -33,6 +34,7 @@ const LogoContainer = styled.div`
 interface Props {
   NEXT_PUBLIC_GRAPHQL_BASE_URL_GLOBAL?: string
   NEXT_PUBLIC_GRAPHQL_BASE_URL?: string
+  NEXT_PUBLIC_GRAPHQL_BASE_URL_PROCESSENV?: string
 }
 
 export default function Home(props: Props) {
@@ -100,11 +102,15 @@ export default function Home(props: Props) {
 }
 
 export async function getServerSideProps() {
+  const { publicRuntimeConfig } = getConfig()
+
   return {
     props: {
       NEXT_PUBLIC_GRAPHQL_BASE_URL_GLOBAL:
         global.process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
       NEXT_PUBLIC_GRAPHQL_BASE_URL: process.env.NEXT_PUBLIC_GRAPHQL_BASE_URL,
+      NEXT_PUBLIC_GRAPHQL_BASE_URL_PROCESSENV:
+        publicRuntimeConfig.processEnv.NEXT_PUBLIC_GRAPHQL_BASE_URL,
     },
   }
 }
