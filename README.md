@@ -15,7 +15,7 @@ yarn
 Copy the `.env.example` file to `.env` and fill in the values.
 
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 ## Building and running the app
@@ -26,4 +26,3 @@ docker compose up -d
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
