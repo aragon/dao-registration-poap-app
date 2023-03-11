@@ -1,0 +1,3 @@
+query CanClaimPoap($address: String!) {
+  canClaimPoap(address: $address)
+}

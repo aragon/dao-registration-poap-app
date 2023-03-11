@@ -1,0 +1,11 @@
+services:
+  web:
+    env_file:
+      - .env.local
+    build:
+      dockerfile: Dockerfile.prod
+      context: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
